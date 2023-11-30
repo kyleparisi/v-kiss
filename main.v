@@ -1,10 +1,9 @@
-import net.http
+module main
+
+fn hello() string {
+	return "Hello, Testing!"
+}
 
 fn main() {
-	resp := http.get("https://google.com/") or {
-		println('failed to fetch data from the server')
-		return
-	}
-	println(resp)
-	println(resp.body)
+	println(hello())
 }

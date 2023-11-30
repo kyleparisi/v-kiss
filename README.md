@@ -2,8 +2,9 @@
 
 ```bash
 v run main.v
+v test .
 ```
 
 ```bash
-git checkout test
+git checkout mock
 ```
