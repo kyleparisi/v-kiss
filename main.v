@@ -1,7 +1,10 @@
+import net.http
+
 fn main() {
-	areas := ['game', 'web', 'tools', 'science', 'systems',
-	'embedded', 'drivers', 'GUI', 'mobile']
-	for area in areas {
-		println('Hello, ${area} developers!')
+	resp := http.get("https://google.com/") or {
+		println('failed to fetch data from the server')
+		return
 	}
+	println(resp)
+	println(resp.body)
 }
