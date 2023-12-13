@@ -20,10 +20,10 @@ fn (mut state AppState) draw() {
 	state.y += state.dy
 	// state.gg.draw_rounded_rect_filled(state.x, state.y, 10, 10, 0, gx.rgb(143, 130, 119))
 	state.gg.draw_image(state.x, state.y, image_hw, image_hw, state.image)
-	if state.x <= -10 {
+	if state.x <= -image_padding {
 		state.dx = velocity
 	}
-	if state.y <= -10 {
+	if state.y <= -image_padding {
 		state.dy = velocity
 	}
 	if state.x >= size.width - image_hw + image_padding {
