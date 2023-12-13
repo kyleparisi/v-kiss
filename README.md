@@ -6,5 +6,5 @@ v test .
 ```
 
 ```bash
-git checkout mock
+git checkout ui
 ```
