@@ -1,24 +1,61 @@
-module main
+import gg
 
-import net.http
+const velocity = 3
+const image_hw = 100
+const image_padding = 10
 
-interface IHttpClient {
-	get(string) !http.Response
+struct AppState {
+mut:
+	gg    &gg.Context = unsafe { nil }
+	x     int
+	y     int
+	dy    int
+	dx    int
+	image gg.Image
 }
 
-struct HttpClient {}
-
-fn (h &HttpClient) get(url string) !http.Response {
-	return http.get(url)
+fn (mut state AppState) draw() {
+	size := gg.window_size()
+	state.x += state.dx
+	state.y += state.dy
+	// state.gg.draw_rounded_rect_filled(state.x, state.y, 10, 10, 0, gx.rgb(143, 130, 119))
+	state.gg.draw_image(state.x, state.y, image_hw, image_hw, state.image)
+	if state.x <= -10 {
+		state.dx = velocity
+	}
+	if state.y <= -10 {
+		state.dy = velocity
+	}
+	if state.x >= size.width - image_hw + image_padding {
+		state.dx = -velocity
+	}
+	if state.y >= size.height - image_hw + image_padding {
+		state.dy = -velocity
+	}
 }
 
-fn send(client IHttpClient, url string) !http.Response {
-	response := client.get(url)!
-	return response
+// gg callbacks:
+fn graphics_frame(mut state AppState) {
+	state.gg.begin()
+	state.draw()
+	state.gg.end()
 }
 
 fn main() {
-	client := HttpClient{}
-	response := send(client, 'https://kyleparisi.com')!
-	println(response)
+	mut state := &AppState{
+		x: 10
+		y: 10
+		dx: velocity
+		dy: velocity
+	}
+	state.gg = gg.new_context(
+		width: 800
+		height: 600
+		create_window: true
+		window_title: 'dVd'
+		frame_fn: graphics_frame
+		user_data: state
+	)
+	state.image = state.gg.create_image('logo.png')!
+	state.gg.run()
 }
